@@ -1,0 +1,55 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.uw.ezubatov.steptracker.SettingsView">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/goalsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Golas"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/timeIntervalTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time Interval"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/timeIntervalData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="time"
+            android:text="0:15"
+            android:textAlignment="textStart" />
+
+        <TextView
+            android:id="@+id/stepsNumberTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            tools:text="Number of Steps" />
+
+        <EditText
+            android:id="@+id/numberStepsData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:text="100" />
+
+    </LinearLayout>
+
+</FrameLayout>
