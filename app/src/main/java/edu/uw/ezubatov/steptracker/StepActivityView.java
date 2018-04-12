@@ -139,6 +139,11 @@ public class StepActivityView extends android.support.v4.app.Fragment
     }
 
     @Override
+    public void onNextBatch(double[] raw, double[] smooted) {
+
+    }
+
+    @Override
     public void onAndroidSteps(int steps) {
         View view = this.getView();
         if (view == null) return;

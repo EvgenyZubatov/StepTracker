@@ -1,7 +1,9 @@
 package edu.uw.ezubatov.steptracker;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Eugen on 4/11/2018.
@@ -16,9 +18,9 @@ public class Buffer {
     private double C = 0.8;
     private double G = 11;
 
-    private List<Double> data;
-    private List<Double> runningAverage;
-    private List<Double> peaks;
+    private ArrayList<Double> data;
+    private ArrayList<Double> runningAverage;
+    private ArrayList<Double> peaks;
 
     private double total = 0;
 
@@ -28,6 +30,23 @@ public class Buffer {
         this.data = new ArrayList<>(size+1);
         this.runningAverage = new ArrayList<>(size+1);
         this.peaks = new ArrayList<>(size+1);
+    }
+
+    public double[] getRawData() {
+        return getResult(data);
+    }
+
+    public double[] getSmoothedData() {
+        return getResult(runningAverage);
+    }
+
+    private double[] getResult(ArrayList<Double> input) {
+        final double[] result = new double[size];
+        int i = 0;
+        for (Double x: input) {
+            result[i++] = x.doubleValue();
+        };
+        return result;
     }
 
     public int addSample(double x) {

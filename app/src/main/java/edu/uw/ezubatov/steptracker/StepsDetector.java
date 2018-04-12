@@ -15,8 +15,12 @@ class StepsDetector {
         return ourInstance;
     }
 
+    private final int batch = 20;
+    private final int window = 10;
+    private int i = 0;
+
     private StepsDetector() {
-        buffer = new Buffer(20,10);
+        buffer = new Buffer(batch,window);
     }
 
     public void onNewData(float[] values) {
@@ -24,6 +28,15 @@ class StepsDetector {
         int s = buffer.addSample(l);
         if (s != 0) {
             updateSteps(s);
+        }
+
+        i++;
+        if (i >= batch) {
+            i=0;
+
+            for (OnStepsListener listener: listeners) {
+                listener.onNextBatch(buffer.getRawData(), buffer.getSmoothedData());
+            }
         }
     }
 
@@ -38,6 +51,7 @@ class StepsDetector {
 
     public interface OnStepsListener {
         void onSteps(int steps);
+        void onNextBatch(double[] raw, double[] smooted);
     }
 
     HashSet<StepsDetector.OnStepsListener> listeners = new HashSet<>();

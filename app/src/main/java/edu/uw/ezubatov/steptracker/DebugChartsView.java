@@ -23,7 +23,8 @@ import java.util.Random;
  * Use the {@link DebugChartsView#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DebugChartsView extends android.support.v4.app.Fragment {
+public class DebugChartsView extends android.support.v4.app.Fragment
+implements StepsDetector.OnStepsListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -46,7 +47,12 @@ public class DebugChartsView extends android.support.v4.app.Fragment {
     private LineGraphSeries<DataPoint> _seriesY;
     private LineGraphSeries<DataPoint> _seriesZ;
     private LineGraphSeries<DataPoint> _seriesMag;
+
+    private LineGraphSeries<DataPoint> _seriesRaw;
+    private LineGraphSeries<DataPoint> _seriesSmooth;
+
     private int counter = 0;
+    private int rawCounter = 0;
 
     private OnFragmentInteractionListener mListener;
 
@@ -117,14 +123,30 @@ public class DebugChartsView extends android.support.v4.app.Fragment {
         graphX.addSeries(_seriesZ);
         graphX.setTitle("Real-Time X,Y,Z");
         graphX.getGridLabelRenderer().setVerticalAxisTitle("Accelerometer X,Y,Z");
+
+        GraphView graphSmooth = (GraphView)  getView().findViewById(R.id.graphSmooth);
+        _seriesSmooth = new LineGraphSeries<>();
+        _seriesRaw = new LineGraphSeries<>();
+
+        _seriesRaw.setColor(Color.BLACK);
+        _seriesRaw.setDrawDataPoints(true);
+        _seriesRaw.setDataPointsRadius(10);
+        _seriesRaw.setThickness(8);
+
+
+        _seriesSmooth.setColor(Color.RED);
+        _seriesSmooth.setDrawDataPoints(true);
+        _seriesSmooth.setDataPointsRadius(10);
+        _seriesSmooth.setThickness(12);
+
+        graphSmooth.addSeries(_seriesRaw);
+        graphSmooth.addSeries(_seriesSmooth);
+        graphSmooth.setTitle("Smoothed and Raw data");
+        graphSmooth.getGridLabelRenderer().setVerticalAxisTitle("Smoothed Magnitude");
+
+        StepsDetector.getInstance().subscribeForSteps(this);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(R.layout.fragment_debug_charts_view);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -141,6 +163,24 @@ public class DebugChartsView extends android.support.v4.app.Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onSteps(int steps) {
+
+    }
+
+    @Override
+    public void onNextBatch(double[] raw, double[] smooted) {
+        int i=0;
+        for (double r: raw) {
+            _seriesRaw.appendData(new DataPoint(rawCounter + (i++), r), false, 40);
+        }
+        i=0;
+        for (double r: smooted) {
+            _seriesSmooth.appendData(new DataPoint(rawCounter + (i++), r), false, 40);
+        }
+        rawCounter += raw.length;
     }
 
     /**
