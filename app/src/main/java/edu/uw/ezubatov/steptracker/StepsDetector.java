@@ -40,6 +40,10 @@ class StepsDetector {
         }
     }
 
+    public int getCurrentStepCount() {
+        return steps;
+    }
+
     private int steps = 0;
 
     private void updateSteps(int s) {

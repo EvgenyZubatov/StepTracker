@@ -95,12 +95,11 @@ public class StepActivityView extends android.support.v4.app.Fragment
         }
     }
 
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(R.layout.fragment_step_activity_view);
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        onSteps(StepsDetector.getInstance().getCurrentStepCount());
+        onAndroidSteps(SensorDataManager.getInstance().getStepCount());
     }
 
     @Override
