@@ -173,12 +173,13 @@ implements StepsDetector.OnStepsListener{
     @Override
     public void onNextBatch(double[] raw, double[] smooted) {
         int i=0;
+        int dataPoints = 100;
         for (double r: raw) {
-            _seriesRaw.appendData(new DataPoint(rawCounter + (i++), r), false, 40);
+            _seriesRaw.appendData(new DataPoint(rawCounter + (i++), r), false, dataPoints);
         }
         i=0;
         for (double r: smooted) {
-            _seriesSmooth.appendData(new DataPoint(rawCounter + (i++), r), false, 40);
+            _seriesSmooth.appendData(new DataPoint(rawCounter + (i++), r), false, dataPoints);
         }
         rawCounter += raw.length;
     }
@@ -216,7 +217,7 @@ implements StepsDetector.OnStepsListener{
 
     private void updateData(int c) {
         float[] data = AccelerometerDataManager.getInstance().getCurrentAverage();
-        int maxDataPoints = 20;
+        int maxDataPoints = 50;
         _seriesX.appendData(new DataPoint(c, data[0]), false, maxDataPoints);
         _seriesY.appendData(new DataPoint(c, data[1]), false, maxDataPoints);
         _seriesZ.appendData(new DataPoint(c, data[2]), false, maxDataPoints);
